@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}
+Baby Profile | BabyCare
+{% endblock %}
+
+{% block content %}
+{% if babies and babies|length > 0 %}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>👶 My Baby Profiles</h2>
+
+        <a href="{{ url_for('main.baby_profile',new=1) }}"
+           class="btn btn-success">
+            ➕ Add Another Baby
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        {% for baby in babies %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow-lg border-0 h-100">
+
+                {% if baby.photo %}
+                <img src="{{ url_for('static', filename='uploads/' + baby.photo) }}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;">
+                {% else %}
+                <img src="{{ url_for('static', filename='baby.png') }}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body text-center">
+
+                    <h4>{{ baby.baby_name }}</h4>
+
+                    <p class="text-muted">
+                        {{ baby.gender }} • {{ baby.dob }}
+                    </p>
+
+                    <a href="{{ url_for('main.view_baby', id=baby.id) }}"
+                       class="btn btn-primary btn-sm">
+                        View
+                    </a>
+
+                    <a href="{{ url_for('main.edit_baby', id=baby.id) }}"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="{{ url_for('main.delete_baby', id=baby.id) }}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this baby profile?')">
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+        </div>
+
+
+    </div>
+
+</div>
+
+{% else %}
+<div class="container py-5">
+
+    <!-- Header -->
+
+    <div class="card text-center shadow border-0 mb-4">
+
+        <div class="card-body">
+
+            <h2 class="fw-bold">
+                👶 Baby Profile
+            </h2>
+
+            <p class="text-muted">
+                Keep your baby's information safe and organized.
+            </p>
+
+        </div>
+
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <!-- Photo Card -->
+
+        <div class="card shadow border-0 mb-4">
+
+            <div class="card-body text-center">
+
+                <img
+                    id="preview"
+                    src="{{ url_for('static', filename='baby.png') }}"
+                    class="rounded-circle shadow mb-3"
+                    style="width:180px;height:180px;object-fit:cover;">
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-camera-fill"></i>
+                        Baby Photo
+                    </label>
+
+                    <input
+                        type="file"
+                        class="form-control"
+                        name="photo"
+                        accept="image/*">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Basic Details -->
+
+        <div class="card shadow border-0 mb-4">
+
+            <div class="card-body">
+
+                <h4 class="mb-4">
+                    👶 Basic Details
+                </h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            <i class="bi bi-person-heart"></i>
+                            Baby Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="baby_name"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            <i class="bi bi-calendar-event"></i>
+                            Date of Birth
+                        </label>
+
+                        <input
+                            type="date"
+                            name="dob"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            <i class="bi bi-gender-ambiguous"></i>
+                            Gender
+                        </label>
+
+                        <select
+                            name="gender"
+                            class="form-select"
+                            required>
+
+                            <option value="">Select Gender</option>
+
+                            <option>Male</option>
+
+                            <option>Female</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            🩸 Blood Group
+                        </label>
+
+                        <input
+                            type="text"
+                            name="blood_group"
+                            class="form-control"
+                            placeholder="O+, A+, B+">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Growth -->
+
+        <div class="card shadow border-0 mb-4">
+
+            <div class="card-body">
+
+                <h4 class="mb-4">
+                    📏 Growth Information
+                </h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            📐 Height (cm)
+                        </label>
+
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="height"
+                            class="form-control">
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            ⚖ Weight (kg)
+                        </label>
+
+                        <input
+                            type="number"
+                            step="0.1"
+                            name="weight"
+                            class="form-control">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Parent -->
+
+        <div class="card shadow border-0 mb-4">
+
+            <div class="card-body">
+
+                <h4 class="mb-4">
+                    👨 Parent Information
+                </h4>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            👤 Parent Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="parent_name"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+                            📞 Phone Number
+                        </label>
+
+                        <input
+                            type="text"
+                            name="parent_phone"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Save Button -->
+
+        <div class="text-center">
+
+            <button
+                type="submit"
+                class="btn btn-success btn-lg px-5">
+
+                💾 Save Baby Profile
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+document.querySelector('input[name="photo"]').onchange=function(e){
+
+    const file=e.target.files[0];
+
+    if(file){
+
+        document.getElementById("preview").src=URL.createObjectURL(file);
+
+    }
+
+}
+
+</script>
+{%endif %}
+
+{% endblock %}

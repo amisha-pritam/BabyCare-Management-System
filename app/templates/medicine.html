@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+Medicine Reminder
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card p-4">
+
+        <h2 class="text-center mb-4">
+            💊 Medicine Reminder
+        </h2>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Medicine Name</label>
+                <input type="text"
+                       name="medicine_name"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Medicine Date</label>
+                <input type="date"
+                       name="medicine_date"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Medicine Time</label>
+                <input type="time"
+                       name="medicine_time"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Dosage</label>
+                <input type="text"
+                       name="dosage"
+                       class="form-control"
+                       placeholder="Example: 5 ml"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea name="notes"
+                          rows="3"
+                          class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save Reminder
+            </button>
+
+        </form>
+         <hr class="my-4">
+
+<h3 class="mb-3">Medicine Reminders</h3>
+
+{% if medicines %}
+<form method="GET" class="mb-3">
+    <div class="input-group">
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search medicine..."
+            value="{{ request.args.get('search', '') }}">
+
+        <button class="btn btn-primary">
+            Search
+        </button>
+    </div>
+</form>
+<table class="table table-bordered table-hover">
+
+    <thead class="table-light">
+
+        <tr>
+            <th>Medicine</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Dosage</th>
+            <th>Notes</th>
+            <th>Action</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for medicine in medicines %}
+
+        <tr>
+
+            <td>{{ medicine.medicine_name }}</td>
+            <td>{{ medicine.medicine_date }}</td>
+            <td>{{ medicine.medicine_time }}</td>
+            <td>{{ medicine.dosage }}</td>
+            <td>{{ medicine.notes }}</td>
+
+            <td>
+                <a href="{{ url_for('main.delete_medicine', id=medicine.id) }}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Delete this reminder?')">
+                    Delete
+                </a>
+            </td>
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+    No medicine reminders found.
+</div>
+
+{% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

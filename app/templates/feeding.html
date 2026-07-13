@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}
+Feeding Tracker
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card p-4">
+
+        <h2 class="text-center mb-4">
+            🍼 Feeding Tracker
+        </h2>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Feeding Date</label>
+                <input type="date"
+                       name="feeding_date"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Feeding Time</label>
+                <input type="time"
+                       name="feeding_time"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Food Type</label>
+                <input type="text"
+                       name="food_type"
+                       class="form-control"
+                       placeholder="Milk, Formula, Cerelac..."
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Quantity</label>
+                <input type="text"
+                       name="quantity"
+                       class="form-control"
+                       placeholder="150 ml">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea name="notes"
+                          rows="3"
+                          class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save Feeding Record
+            </button>
+
+        </form>
+
+        <hr class="my-4">
+
+        <h3>Feeding Records</h3>
+
+        {% if feedings %}
+        <form method="GET" class="mb-3">
+    <div class="input-group">
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search food type..."
+            value="{{ request.args.get('search', '') }}">
+
+        <button class="btn btn-primary">
+            Search
+        </button>
+    </div>
+</form>
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-light">
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Food Type</th>
+                    <th>Quantity</th>
+                    <th>Notes</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for feeding in feedings %}
+
+                <tr>
+
+                    <td>{{ feeding.feeding_date }}</td>
+                    <td>{{ feeding.feeding_time }}</td>
+                    <td>{{ feeding.food_type }}</td>
+                    <td>{{ feeding.quantity }}</td>
+                    <td>{{ feeding.notes }}</td>
+
+                    <td>
+                        <a href="{{ url_for('main.delete_feeding', id=feeding.id) }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Delete this record?')">
+                            Delete
+                        </a>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="alert alert-info">
+            No feeding records found.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

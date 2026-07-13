@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reports
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">
+        📊 Health Reports Dashboard
+    </h2>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <a href="{{ url_for('main.vaccination') }}" class="text-decoration-none">
+            <div class="card bg-primary text-white text-center p-3">
+                <h2>{{ vaccination_count }}</h2>
+                <p>💉 Vaccinations</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ url_for('main.feeding') }}" class="text-decoration-none">
+            <div class="card bg-success text-white text-center p-3">
+                <h2>{{ feeding_count }}</h2>
+                <p>🍼 Feedings</p>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ url_for('main.sleep') }}" class="text-decoration-none">
+            <div class="card bg-warning text-dark text-center p-3">
+                <h2>{{ sleep_count }}</h2>
+                <p>😴 Sleep Records</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{ url_for('main.growth') }}" class="text-decoration-none">
+            <div class="card bg-info text-white text-center p-3">
+                <h2>{{ growth_count }}</h2>
+                <p>📈 Growth Records</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{{ url_for('main.medicine') }}" class="text-decoration-none">
+            <div class="card bg-danger text-white text-center p-3">
+                <h2>{{ medicine_count }}</h2>
+                <p>💊 Medicines</p>
+            </div>
+        </div>
+    </div>
+ <!-- BAR GRAPH -->
+    <div class="card p-4 mt-4">
+
+    <h4 class="text-center mb-3">
+        📊 Health Records Overview
+    </h4>
+
+    <canvas id="healthChart"></canvas>
+
+</div>
+ <!-- PIE Chart -->
+<div class="card p-4 mt-4">
+
+    <h4 class="text-center mb-3">
+        🥧 Record Distribution
+    </h4>
+
+    <canvas id="pieChart"></canvas>
+
+</div>
+
+    <!-- Height Chart -->
+    <div class="card p-4 mb-4">
+
+        <h4 class="mb-3">📈 Height Growth Chart</h4>
+
+        <img src="{{ url_for('static', filename='charts/height_chart.png') }}"
+             class="img-fluid rounded shadow">
+
+    </div>
+
+    <!-- Weight Chart -->
+    <div class="card p-4">
+
+        <h4 class="mb-3">⚖️ Weight Growth Chart</h4>
+
+        <img src="{{ url_for('static', filename='charts/weight_chart.png') }}"
+             class="img-fluid rounded shadow">
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('healthChart');
+
+new Chart(ctx, {
+    type: 'bar',
+
+    data: {
+        labels: [
+            'Vaccination',
+            'Feeding',
+            'Sleep',
+            'Growth',
+            'Medicine'
+        ],
+
+        datasets: [{
+            label: 'Total Records',
+
+            data: [
+                {{ vaccination_count }},
+                {{ feeding_count }},
+                {{ sleep_count }},
+                {{ growth_count }},
+                {{ medicine_count }}
+            ]
+        }]
+    },
+
+    options: {
+        responsive: true,
+
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+
+});
+
+</script>
+<script>
+
+const pieCtx = document.getElementById('pieChart');
+
+new Chart(pieCtx, {
+
+    type: 'pie',
+
+    data: {
+
+        labels: [
+            'Vaccination',
+            'Feeding',
+            'Sleep',
+            'Growth',
+            'Medicine'
+        ],
+
+        datasets: [{
+
+            data: [
+                {{ vaccination_count }},
+                {{ feeding_count }},
+                {{ sleep_count }},
+                {{ growth_count }},
+                {{ medicine_count }}
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true
+
+    }
+
+});
+
+</script>
+{% endblock %}

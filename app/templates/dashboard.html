@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | BabyCare
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+
+    <div class="col-md-2">
+        <div class="card text-center p-3">
+            <h2>{{ vaccination_count }}</h2>
+            <small>Vaccines</small>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center p-3">
+            <h2>{{ feeding_count }}</h2>
+            <small>Feedings</small>
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div class="card text-center p-3">
+            <h2>{{ sleep_count }}</h2>
+            <small>Sleep</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h2>{{ growth_count }}</h2>
+            <small>Growth</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card text-center p-3">
+            <h2>{{ medicine_count }}</h2>
+            <small>Medicines</small>
+        </div>
+    </div>
+
+</div>
+<div class="card p-5 mb-4">
+    <h2 class="fw-bold">
+        Welcome, {{ current_user.name }} 👋
+    </h2>
+
+    <p class="text-muted mb-0">
+        Manage your baby's health records easily and securely.
+    </p>
+</div>
+
+<div class="row g-4">
+
+    <!-- Baby Profile -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-person-heart display-3 text-primary mb-3"></i>
+
+            <h4>Baby Profile</h4>
+
+            <p class="text-muted">
+                Add and manage baby details.
+            </p>
+
+            <a href="{{ url_for('main.baby_profile') }}"
+               class="btn btn-primary">
+                Open
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Vaccination -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-shield-plus display-3 text-success mb-3"></i>
+
+            <h4>Vaccination</h4>
+
+            <p class="text-muted">
+                Track upcoming vaccines.
+            </p>
+
+            <a href="{{ url_for('main.vaccination') }}"
+               class="btn btn-success">
+                Open 
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Feeding -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-cup-hot display-3 mb-3" style="color:#FFB86B;"></i>
+
+            <h4>Feeding</h4>
+
+            <p class="text-muted">
+                Record feeding schedules.
+            </p>
+
+            <a href="{{ url_for('main.feeding') }}" class="btn btn-warning w-100">
+             Open 
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Sleep -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-moon-stars display-3 mb-3" style="color:#8E9AFE;"></i>
+
+            <h4>Sleep Tracker</h4>
+
+            <p class="text-muted">
+                Monitor sleeping patterns.
+            </p>
+
+            <a href="{{ url_for('main.sleep') }}"
+               class="btn btn-primary">
+                Open 
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Growth -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-graph-up-arrow display-3 text-success mb-3"></i>
+
+            <h4>Growth Tracker</h4>
+
+            <p class="text-muted">
+                Track height and weight.
+            </p>
+
+            <a href="{{ url_for('main.growth') }}"
+   class="btn btn-success">
+    Open 
+          </a>
+
+        </div>
+    </div>
+
+    <!-- Medicine -->
+    <div class="col-md-4">
+        <div class="card text-center p-4 h-100">
+
+            <i class="bi bi-capsule-pill display-3 text-danger mb-3"></i>
+
+            <h4>Medicine</h4>
+
+            <p class="text-muted">
+                Medicine reminders.
+            </p>
+
+            <a href="{{ url_for('main.medicine') }}"
+   class="btn btn-danger w-100">
+    Open 
+</a>
+
+        </div>
+    </div>
+
+    <!-- Reports -->
+<div class="col-md-4">
+    <div class="card text-center p-4 h-100">
+
+        <i class="bi bi-bar-chart-line display-3 text-primary mb-3"></i>
+
+        <h4>Reports</h4>
+
+        <p class="text-muted">
+            View charts and health reports.
+        </p>
+
+        <a href="{{ url_for('main.reports') }}"
+           class="btn btn-primary">
+            Open Reports
+        </a>
+
+    </div>
+</div>
+<!-- My Babies -->
+<div class="col-md-4">
+    <div class="card text-center p-4 h-100">
+
+        <i class="bi bi-person-hearts display-3 text-primary mb-3"></i>
+
+        <h4>My Babies</h4>
+
+        <h2>{{ baby_count }}</h2>
+
+        <p class="text-muted">
+            Registered Baby Profiles
+        </p>
+
+        <a href="{{ url_for('main.baby_profile') }}"
+           class="btn btn-primary">
+            View Babies
+        </a>
+
+    </div>
+</div>
+
+<div class="card mt-4 p-4">
+
+    <h4>💉 Upcoming Vaccinations</h4>
+
+    {% if vaccinations %}
+
+        <ul class="list-group">
+
+        {% for vaccine in vaccinations %}
+
+            <li class="list-group-item">
+                <strong>{{ vaccine.vaccine_name }}</strong>
+                <span class="float-end">
+                    {{ vaccine.vaccination_date }}
+                </span>
+            </li>
+
+        {% endfor %}
+
+        </ul>
+
+    {% else %}
+
+        <p>No vaccination records available.</p>
+
+    {% endif %}
+
+</div>
+<div class="card mt-4 p-4">
+
+    <h4>💊 Medicine Reminders</h4>
+
+    {% if medicines %}
+
+        <ul class="list-group">
+
+        {% for medicine in medicines %}
+
+            <li class="list-group-item">
+                <strong>{{ medicine.medicine_name }}</strong>
+
+                <span class="float-end">
+                    {{ medicine.medicine_date }}
+                    {{ medicine.medicine_time }}
+                </span>
+            </li>
+
+        {% endfor %}
+
+        </ul>
+
+    {% else %}
+
+        <p>No medicine reminders available.</p>
+
+    {% endif %}
+
+</div>
+</div>
+
+{% endblock %}

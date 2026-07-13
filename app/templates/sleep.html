@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}
+Sleep Tracker
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card p-4">
+
+        <h2 class="text-center mb-4">
+            😴 Sleep Tracker
+        </h2>
+
+        <form method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Sleep Date</label>
+                <input type="date"
+                       name="sleep_date"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sleep Start Time</label>
+                <input type="time"
+                       name="sleep_start"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Wake-up Time</label>
+                <input type="time"
+                       name="sleep_end"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duration</label>
+                <input type="text"
+                       name="duration"
+                       class="form-control"
+                       placeholder="Example: 8 Hours">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea name="notes"
+                          rows="3"
+                          class="form-control"></textarea>
+            </div>
+
+            <button type="submit"
+                    class="btn btn-success">
+
+                Save Sleep Record
+
+            </button>
+
+        </form>
+      <hr class="my-4">
+
+<h3 class="mb-3">Sleep Records</h3>
+
+{% if sleep_records %}
+<form method="GET" class="mb-3">
+    <div class="input-group">
+        <input
+            type="text"
+            name="search"
+            class="form-control"
+            placeholder="Search notes..."
+            value="{{ request.args.get('search', '') }}">
+
+        <button class="btn btn-primary">
+            Search
+        </button>
+    </div>
+</form>
+<table class="table table-bordered table-hover">
+
+    <thead class="table-light">
+
+        <tr>
+
+            <th>Date</th>
+
+            <th>Sleep Start</th>
+
+            <th>Wake-up Time</th>
+
+            <th>Duration</th>
+
+            <th>Notes</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for sleep in sleep_records %}
+
+        <tr>
+
+            <td>{{ sleep.sleep_date }}</td>
+
+            <td>{{ sleep.sleep_start }}</td>
+
+            <td>{{ sleep.sleep_end }}</td>
+
+            <td>{{ sleep.duration }}</td>
+
+            <td>{{ sleep.notes }}</td>
+
+            <td>
+
+                <a href="{{ url_for('main.delete_sleep', id=sleep.id) }}"
+                   class="btn btn-danger btn-sm"
+                   onclick="return confirm('Delete this sleep record?')">
+
+                    Delete
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No sleep records found.
+
+</div>
+
+{% endif %}  
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Baby Profiles
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>👶 My Baby Profiles</h2>
+
+        <a href="{{ url_for('main.baby_profile', new=1) }}"
+           class="btn btn-success">
+            ➕ Add Another Baby
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        {% for baby in babies %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                {% if baby.photo %}
+                <img src="{{ url_for('static', filename='uploads/' + baby.photo) }}"
+                     class="card-img-top"
+                     style="height:260px;object-fit:cover;">
+                {% else %}
+                <img src="{{ url_for('static', filename='baby.png') }}"
+                     class="card-img-top"
+                     style="height:260px;object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body text-center">
+
+                    <h3>{{ baby.baby_name }}</h3>
+
+                    <p>
+                        {{ baby.gender }} • {{ baby.dob }}
+                    </p>
+
+                    <a href="{{ url_for('main.view_baby', id=baby.id) }}"
+                       class="btn btn-primary btn-sm">
+                        View
+                    </a>
+
+                    <a href="{{ url_for('main.edit_baby', id=baby.id) }}"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <a href="{{ url_for('main.delete_baby', id=baby.id) }}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Delete this baby profile?')">
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
